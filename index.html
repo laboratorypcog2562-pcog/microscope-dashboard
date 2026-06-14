@@ -1,1 +1,70 @@
-<h1>Microscope Dashboard</h1>
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Microscope Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>🔬 Microscope Monitoring Dashboard</h1>
+
+<div id="dashboard"></div>
+
+<script>
+
+fetch('data.json')
+.then(response => response.json())
+.then(data => {
+
+const dashboard =
+document.getElementById('dashboard');
+
+data.forEach(item => {
+
+let emoji = "⚪";
+
+if(item.status.includes("Normal"))
+emoji = "🟢";
+
+if(item.status.includes("Warning"))
+emoji = "🟡";
+
+if(item.status.includes("Out of Service"))
+emoji = "🔴";
+
+dashboard.innerHTML += `
+
+<div class="card">
+
+<h3>
+${emoji}
+${item.microscope}
+</h3>
+
+<p>
+User :
+${item.user}
+</p>
+
+<p>
+Status :
+${item.status}
+</p>
+
+</div>
+
+`;
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
