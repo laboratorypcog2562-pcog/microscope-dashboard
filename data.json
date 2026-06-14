@@ -3,5 +3,17 @@
     "microscope":"No.1 Olympus",
     "user":"tt",
     "status":"ปกติ (Normal)"
+  },
+
+  {
+    "microscope":"No.2 Olympus",
+    "user":"-",
+    "status":"No Record"
+  },
+
+  {
+    "microscope":"No.3 Olympus",
+    "user":"-",
+    "status":"No Record"
   }
 ]
