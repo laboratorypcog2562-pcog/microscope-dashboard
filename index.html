@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 <meta charset="UTF-8">
-<title>Microscope Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microscopy Control Room</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -11,56 +12,121 @@
 
 <body>
 
-<h1>🔬 Microscope Monitoring Dashboard</h1>
+<div class="header">
+
+<h1>🔬 Microscopy Control Room Dashboard</h1>
+
+<p>
+Department of Pharmacognosy Laboratory
+</p>
+
+</div>
+
+<div class="summary">
+
+<div class="summary-card normal">
+<div id="normalCount">0</div>
+<span>Normal</span>
+</div>
+
+<div class="summary-card warning">
+<div id="warningCount">0</div>
+<span>Warning</span>
+</div>
+
+<div class="summary-card danger">
+<div id="dangerCount">0</div>
+<span>Out of Service</span>
+</div>
+
+<div class="summary-card norecord">
+<div id="norecordCount">0</div>
+<span>No Record</span>
+</div>
+
+</div>
 
 <div id="dashboard"></div>
 
 <script>
 
 fetch('data.json')
+
 .then(response => response.json())
+
 .then(data => {
 
+let normal = 0;
+let warning = 0;
+let danger = 0;
+let norecord = 0;
+
 const dashboard =
-document.getElementById('dashboard');
+document.getElementById("dashboard");
 
 data.forEach(item => {
 
-let emoji = "⚪";
+let cardClass = "norecord";
 
-if(item.status.includes("Normal"))
-emoji = "🟢";
+if(item.status.includes("Normal")){
 
-if(item.status.includes("Warning"))
-emoji = "🟡";
+cardClass = "normal";
+normal++;
 
-if(item.status.includes("Out of Service"))
-emoji = "🔴";
+}
+else if(item.status.includes("Warning")){
+
+cardClass = "warning";
+warning++;
+
+}
+else if(item.status.includes("Out of Service")){
+
+cardClass = "danger";
+danger++;
+
+}
+else{
+
+norecord++;
+
+}
 
 dashboard.innerHTML += `
 
-<div class="card">
+<div class="card ${cardClass}">
 
-<h3>
-${emoji}
-${item.microscope}
-</h3>
+<h3>${item.microscope}</h3>
 
-<p>
-User :
-${item.user}
-</p>
-
-<p>
-Status :
+<div class="status">
 ${item.status}
-</p>
+</div>
+
+<div class="user">
+👤 ${item.user}
+</div>
+
+<div class="date">
+📅 ${item.date}
+</div>
 
 </div>
 
 `;
 
 });
+
+document.getElementById("normalCount").innerText =
+normal;
+
+document.getElementById("warningCount").innerText =
+warning;
+
+document.getElementById("dangerCount").innerText =
+danger;
+
+document.getElementById("norecordCount").innerText =
+norecord;
 
 });
 
