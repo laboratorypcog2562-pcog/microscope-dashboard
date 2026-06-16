@@ -1,55 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Microscopy Control Room</title>
-
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-<div id="alertContainer"></div>
-
-<div class="header">
-
-<h1>🔬 Microscopy Control Room Dashboard</h1>
-
-<p>
-Department of Pharmacognosy Laboratory
-</p>
-
-</div>
-
-<div class="summary">
-
-<div class="summary-card normal">
-<div id="normalCount">0</div>
-<span>Normal</span>
-</div>
-
-<div class="summary-card warning">
-<div id="warningCount">0</div>
-<span>Warning</span>
-</div>
-
-<div class="summary-card danger">
-<div id="dangerCount">0</div>
-<span>Out of Service</span>
-</div>
-
-<div class="summary-card norecord">
-<div id="norecordCount">0</div>
-<span>No Record</span>
-</div>
-
-</div>
-
-<div id="dashboard"></div>
-
 <script>
 
 fetch('data.json')
@@ -62,6 +10,9 @@ let normal = 0;
 let warning = 0;
 let danger = 0;
 let norecord = 0;
+
+const alertContainer =
+document.getElementById("alertContainer");
 
 const dashboard =
 document.getElementById("dashboard");
@@ -118,6 +69,42 @@ ${item.status}
 
 });
 
+
+/* ===== ALERT BANNER ===== */
+
+if (danger > 0) {
+
+  alertContainer.innerHTML += `
+    <div class="alert-danger">
+      🔴 ALERT : พบกล้องใช้งานไม่ได้ ${danger} เครื่อง
+    </div>
+  `;
+
+}
+
+if (warning > 0) {
+
+  alertContainer.innerHTML += `
+    <div class="alert-warning">
+      🟡 WARNING : พบกล้องมีปัญหาเล็กน้อย ${warning} เครื่อง
+    </div>
+  `;
+
+}
+
+if (danger === 0 && warning === 0) {
+
+  alertContainer.innerHTML += `
+    <div class="alert-success">
+      🟢 ระบบปกติ กล้องทั้งหมดพร้อมใช้งาน
+    </div>
+  `;
+
+}
+
+
+/* ===== SUMMARY ===== */
+
 document.getElementById("normalCount").innerText =
 normal;
 
@@ -133,6 +120,3 @@ norecord;
 });
 
 </script>
-
-</body>
-</html>
