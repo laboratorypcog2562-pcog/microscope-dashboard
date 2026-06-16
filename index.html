@@ -1,3 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Microscopy Control Room
+</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+
+<body>
+
+<div id="alertContainer"></div>
+
+<div class="header">
+
+<h1>
+🔬 Microscopy Control Room Dashboard
+</h1>
+
+<p>
+Department of Pharmacognosy Laboratory
+</p>
+
+</div>
+
+<div class="summary">
+
+<div class="summary-card normal">
+
+<div id="normalCount">
+0
+</div>
+
+<span>
+Normal
+</span>
+
+</div>
+
+<div class="summary-card warning">
+
+<div id="warningCount">
+0
+</div>
+
+<span>
+Warning
+</span>
+
+</div>
+
+<div class="summary-card danger">
+
+<div id="dangerCount">
+0
+</div>
+
+<span>
+Out of Service
+</span>
+
+</div>
+
+<div class="summary-card norecord">
+
+<div id="norecordCount">
+0
+</div>
+
+<span>
+No Record
+</span>
+
+</div>
+
+</div>
+
+<div id="dashboard"></div>
+
 <script>
 
 fetch('data.json')
@@ -11,29 +100,43 @@ let warning = 0;
 let danger = 0;
 let norecord = 0;
 
-const alertContainer =
-document.getElementById("alertContainer");
-
 const dashboard =
 document.getElementById("dashboard");
 
+const alertContainer =
+document.getElementById("alertContainer");
+
+dashboard.innerHTML = "";
+
 data.forEach(item => {
+
+const microscope =
+item.microscope || "-";
+
+const user =
+item.user || "-";
+
+const date =
+item.date || "-";
+
+const status =
+(item.status || "").toString();
 
 let cardClass = "norecord";
 
-if(item.status.includes("Normal")){
+if(status.includes("Normal")){
 
 cardClass = "normal";
 normal++;
 
 }
-else if(item.status.includes("Warning")){
+else if(status.includes("Warning")){
 
 cardClass = "warning";
 warning++;
 
 }
-else if(item.status.includes("Out of Service")){
+else if(status.includes("Out of Service")){
 
 cardClass = "danger";
 danger++;
@@ -49,18 +152,24 @@ dashboard.innerHTML += `
 
 <div class="card ${cardClass}">
 
-<h3>${item.microscope}</h3>
+<h3>${microscope}</h3>
 
 <div class="status">
-${item.status}
+
+${status}
+
 </div>
 
 <div class="user">
-👤 ${item.user}
+
+👤 ${user}
+
 </div>
 
 <div class="date">
-📅 ${item.date}
+
+📅 ${date}
+
 </div>
 
 </div>
@@ -69,54 +178,88 @@ ${item.status}
 
 });
 
+/* ALERT */
 
-/* ===== ALERT BANNER ===== */
+if(danger > 0){
 
-if (danger > 0) {
+alertContainer.innerHTML += `
 
-  alertContainer.innerHTML += `
-    <div class="alert-danger">
-      🔴 ALERT : พบกล้องใช้งานไม่ได้ ${danger} เครื่อง
-    </div>
-  `;
+<div class="alert-danger">
 
-}
+🔴 ALERT :
+พบกล้องใช้งานไม่ได้
+${danger} เครื่อง
 
-if (warning > 0) {
+</div>
 
-  alertContainer.innerHTML += `
-    <div class="alert-warning">
-      🟡 WARNING : พบกล้องมีปัญหาเล็กน้อย ${warning} เครื่อง
-    </div>
-  `;
+`;
 
 }
 
-if (danger === 0 && warning === 0) {
+if(warning > 0){
 
-  alertContainer.innerHTML += `
-    <div class="alert-success">
-      🟢 ระบบปกติ กล้องทั้งหมดพร้อมใช้งาน
-    </div>
-  `;
+alertContainer.innerHTML += `
+
+<div class="alert-warning">
+
+🟡 WARNING :
+พบกล้องมีปัญหาเล็กน้อย
+${warning} เครื่อง
+
+</div>
+
+`;
 
 }
 
+if(danger === 0 &&
+warning === 0){
 
-/* ===== SUMMARY ===== */
+alertContainer.innerHTML += `
 
-document.getElementById("normalCount").innerText =
-normal;
+<div class="alert-success">
 
-document.getElementById("warningCount").innerText =
-warning;
+🟢 ระบบปกติ
+กล้องทั้งหมดพร้อมใช้งาน
 
-document.getElementById("dangerCount").innerText =
-danger;
+</div>
 
-document.getElementById("norecordCount").innerText =
-norecord;
+`;
+
+}
+
+document.getElementById(
+"normalCount"
+).innerText = normal;
+
+document.getElementById(
+"warningCount"
+).innerText = warning;
+
+document.getElementById(
+"dangerCount"
+).innerText = danger;
+
+document.getElementById(
+"norecordCount"
+).innerText = norecord;
+
+})
+
+.catch(error => {
+
+document.body.innerHTML =
+
+"<h1>ERROR</h1><pre>" +
+error +
+"</pre>";
+
+console.error(error);
 
 });
 
 </script>
+
+</body>
+
+</html>
