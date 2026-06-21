@@ -90,11 +90,11 @@
   {
     "microscope": "No.9 Olympus",
     "location": "-",
-    "studentId": "-",
-    "user": "-",
-    "course": "-",
-    "date": "-",
-    "status": "No Record",
+    "studentId": 4615032,
+    "user": "๋4615032",
+    "course": "570-231",
+    "date": "2026-06-21T10:06:30.204Z",
+    "status": "ปกติ (Normal)",
     "problem": "-",
     "image": "-"
   },
