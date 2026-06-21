@@ -24,11 +24,11 @@
   {
     "microscope": "No.3 Olympus",
     "location": "-",
-    "studentId": "-",
-    "user": "-",
-    "course": "-",
-    "date": "-",
-    "status": "No Record",
+    "studentId": 4445555,
+    "user": "kk",
+    "course": "570-231",
+    "date": "2026-06-21T10:18:14.362Z",
+    "status": "ปกติ (Normal)",
     "problem": "-",
     "image": "-"
   },
